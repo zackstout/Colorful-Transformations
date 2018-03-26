@@ -6,37 +6,58 @@ function setup() {
   var numDiscs = 30;
   var maxWidth = 500;
 
-  push();
-  translate(width/2, height/2);
+  // can finetune limits here:
+  for (var i=0; i < width; i++) {
+    for (var j=0; j < height; j++) {
+      // apply rectangular transformation:
+      var x = i;
+      var y = j;
+      // get polar coordinates of mapped-to point:
+      var polar = getPolar(x, y);
 
-  //Oh, HSL is made with this idea in mind LOL:
-  for (var i=0; i < numCircles; i++) {
-    // rotate(0.1);
-    for (var j=0; j < numDiscs; j++) {
-      var angle = 2 * PI * i / numCircles + Math.random(); // adding Math.random() here: nice
-      var radius = j * maxWidth/numDiscs;
-      // console.log(radius);
-      var brightness = parseInt(radius * 100 / maxWidth);
-      // console.log(brightness);
+      // polar.a = polar.a + 2;
+      // or you could apply a polar transformation after converting to polar:
 
-      var hue = 360 * i / numCircles;
-      noStroke();
+      // convert to a color:
+      var brightness = polar.r/maxWidth > 100 ? 100 : Math.floor(polar.r * 100/maxWidth);
+      var hue = Math.ceil(360 * polar.a / (2*PI));
       var c = color('hsb(' + hue + ', 100%, ' + brightness + '%)');
-      fill(c);
-      var randomRadius = 25 * Math.random();
-      ellipse(radius*cos(angle), radius*sin(angle), randomRadius, randomRadius);
-    }
 
+      // draw point:
+      stroke(c);
+      point(x, y);
+    }
   }
 
-
-  pop();
+  // push();
+  // translate(width/2, height/2);
+  //
+  // //Oh, HSL is made with this idea in mind LOL:
+  // for (var i=0; i < numCircles; i++) {
+  //   // rotate(0.1);
+  //   for (var j=0; j < numDiscs; j++) {
+  //     var angle = 2 * PI * i / numCircles + Math.random(); // adding Math.random() here: nice
+  //     var radius = j * maxWidth/numDiscs;
+  //     // console.log(radius);
+  //     var brightness = parseInt(radius * 100 / maxWidth);
+  //     // console.log(brightness);
+  //
+  //     var hue = 360 * i / numCircles;
+  //     noStroke();
+  //     var c = color('hsb(' + hue + ', 100%, ' + brightness + '%)');
+  //     fill(c);
+  //     var randomRadius = 25 * Math.random();
+  //     ellipse(radius*cos(angle), radius*sin(angle), randomRadius, randomRadius);
+  //   }
+  //
+  // }
+  // pop();
 }
 
 function mousePressed() {
   // console.log(mouseX, mouseY);
-  getPolar(mouseX, mouseY);
-
+  var x = getPolar(mouseX, mouseY);
+  console.log(x);
 }
 
 function getPolar(x, y) {
@@ -52,21 +73,24 @@ function getPolar(x, y) {
 
   var realAngle;
 
-  if (newX < 0 && newY < 0) {
-    console.log('LL');
+  if (newX <= 0 && newY <= 0) {
+    // console.log('LL');
     realAngle = PI + angle;
-  } else if (newX < 0 && newY > 0) {
-    console.log('LG');
+  } else if (newX <= 0 && newY >= 0) {
+    // console.log('LG');
     realAngle = PI + angle;
-  } else if (newX > 0 && newY < 0) {
-    console.log('GL');
+  } else if (newX >= 0 && newY <= 0) {
+    // console.log('GL');
     realAngle = 2*PI + angle;
-  } else if (newX > 0 && newY > 0) {
-      console.log("GG");
+  } else if (newX >= 0 && newY >= 0) {
+      // console.log("GG");
     realAngle = angle;
   }
 
-  console.log(realAngle);
+  var polar = {r: radius, a: realAngle};
+  return polar;
+
+  // console.log(realAngle);
 }
 
 function draw() {
