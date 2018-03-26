@@ -7,3 +7,5 @@ Using polar coordinates and HSL color syntax to color the grid as a way of repre
 ![screen shot 2018-03-25 at 7 45 04 pm](https://user-images.githubusercontent.com/29472568/37887519-d10a6680-3087-11e8-9af4-bd5db48b1c23.png)
 
 ## Animated Screenshot:
+
+<img src="https://media.giphy.com/media/9DlFUDl90TafkY3WHq/giphy.gif" width="800px">
