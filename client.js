@@ -14,8 +14,10 @@ function setup() {
       var y = j;
       // get polar coordinates of mapped-to point:
       var polar = getPolar(x, y);
+      // console.log();
+      polar.a = (Math.pow(polar.a, 6)) % (2*PI);
 
-      // polar.a = polar.a + 2;
+      // polar.r = Math.pow(polar.r, 2);
       // or you could apply a polar transformation after converting to polar:
 
       // convert to a color:
@@ -73,10 +75,12 @@ function getPolar(x, y) {
 
   var realAngle;
 
-  if (newX <= 0 && newY <= 0) {
+  // get rid of = here too:
+  if (newX < 0 && newY <= 0) {
     // console.log('LL');
     realAngle = PI + angle;
-  } else if (newX <= 0 && newY >= 0) {
+    // get rid of = here:
+  } else if (newX < 0 && newY >= 0) {
     // console.log('LG');
     realAngle = PI + angle;
   } else if (newX >= 0 && newY <= 0) {
